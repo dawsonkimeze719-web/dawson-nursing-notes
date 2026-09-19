@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dawson Nursing Notes</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  color: #172033;
+}
+
+header {
+  background: linear-gradient(135deg, #1769aa, #5e35b1);
+  color: white;
+  padding: 25px 18px;
+  border-radius: 0 0 25px 25px;
+}
+
+header h1 {
+  font-size: 27px;
+  margin-bottom: 6px;
+}
+
+header p {
+  opacity: 0.9;
+}
+
+.search {
+  margin: 18px;
+}
+
+.search input {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px #0002;
+  font-size: 16px;
+  outline: none;
+}
+
+.container {
+  padding: 5px 18px 90px;
+}
+
+.section-title {
+  margin: 20px 0 12px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.card {
+  background: white;
+  padding: 18px 12px;
+  border-radius: 17px;
+  box-shadow: 0 3px 12px #0001;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card:active {
+  transform: scale(0.96);
+}
+
+.card .icon {
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.card h3 {
+  font-size: 15px;
+}
+
+.card p {
+  font-size: 12px;
+  color: #687386;
+  margin-top: 5px;
+}
+
+.ai {
+  margin-top: 20px;
+  background: linear-gradient(135deg, #4527a0, #1565c0);
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.ai button {
+  margin-top: 13px;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 12px;
+  background: white;
+  color: #4527a0;
+  font-weight: bold;
+}
+
+.note-box {
+  display: none;
+  background: white;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 3px 12px #0001;
+}
+
+.note-box h2 {
+  margin-bottom: 12px;
+}
+
+.note-box p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.back {
+  background: #1769aa;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 5px;
+  box-shadow: 0 -3px 15px #0002;
+}
+
+.bottom button {
+  border: none;
+  background: none;
+  font-size: 12px;
+  color: #455;
+}
+
+.bottom span {
+  display: block;
+  font-size: 21px;
+  margin-bottom: 3px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📚 Dawson Nursing Notes</h1>
+  <p>Your personal nursing revision space</p>
+</header>
+
+<div class="search">
+  <input
+    type="text"
+    id="search"
+    placeholder="🔍 Search your notes..."
+    onkeyup="searchNotes()">
+</div>
+
+<div class="container">
+
+  <div id="home">
+
+    <h2 class="section-title">My Subjects</h2>
+
+    <div class="cards">
+
+      <div class="card" onclick="openNote('anatomy')">
+        <div class="icon">🫀</div>
+        <h3>Anatomy</h3>
+        <p>Body structure and organs</p>
+      </div>
+
+      <div class="card" onclick="openNote('physiology')">
+        <div class="icon">🧠</div>
+        <h3>Physiology</h3>
+        <p>How the body works</p>
+      </div>
+
+      <div class="card" onclick="openNote('microbiology')">
+        <div class="icon">🦠</div>
+        <h3>Microbiology</h3>
+        <p>Microorganisms and immunity</p>
+      </div>
+
+      <div class="card" onclick="openNote('foundation')">
+        <div class="icon">🩺</div>
+        <h3>Foundation Nursing</h3>
+        <p>Nursing principles and skills</p>
+      </div>
+
+      <div class="card" onclick="openNote('pch')">
+        <div class="icon">🏥</div>
+        <h3>PCH</h3>
+        <p>Personal and community health</p>
+      </div>
+
+      <div class="card" onclick="openNote('questions')">
+        <div class="icon">📝</div>
+        <h3>Questions</h3>
+        <p>Revision and practice</p>
+      </div>
+
+    </div>
+
+    <div class="ai">
+      <h2>🤖 AI Study Assistant</h2>
+      <p style="margin-top:8px;">
+        Ask for explanations, memory tricks, summaries and revision help.
+      </p>
+      <button onclick="openAI()">Open AI Assistant</button>
+    </div>
+
+  </div>
+
+
+  <div id="notes" class="note-box"></div>
+
+</div>
+
+
+<div class="bottom">
+  <button onclick="showHome()">
+    <span>🏠</span>
+    Home
+  </button>
+
+  <button onclick="openNote('questions')">
+    <span>📝</span>
+    Questions
+  </button>
+
+  <button onclick="openAI()">
+    <span>🤖</span>
+    AI
+  </button>
+
+  <button onclick="alert('Dawson Nursing Notes\\nPersonal revision app 📚')">
+    <span>👤</span>
+    Me
+  </button>
+</div>
+
+
+<script>
+
+const notes = {
+
+  anatomy: {
+    title: "🫀 Anatomy",
+    text: `
+      <p><b>What is Anatomy?</b></p>
+      <p>Anatomy is the study of the structure of the human body and the relationship between its parts.</p>
+
+      <p><b>Major areas to study:</b></p>
+      <p>• Cells<br>
+      • Tissues<br>
+      • Organs<br>
+      • Skeletal system<br>
+      • Muscular system<br>
+      • Cardiovascular system<br>
+      • Respiratory system<br>
+      • Digestive system</p>
+
+      <p><b>Memory tip:</b> Structure = Anatomy.</p>
+    `
+  },
+
+  physiology: {
+    title: "🧠 Physiology",
+    text: `
+      <p><b>What is Physiology?</b></p>
+      <p>Physiology is the study of how the body and its parts function.</p>
+
+      <p><b>Easy memory tip:</b></p>
+      <p>Anatomy = structure 🧱</p>
+      <p>Physiology = function ⚙️</p>
+    `
+  },
+
+  microbiology: {
+    title: "🦠 Microbiology",
+    text: `
+      <p><b>What is Microbiology?</b></p>
+      <p>Microbiology is the study of microorganisms.</p>
+
+      <p>Examples include:</p>
+      <p>• Bacteria<br>
+      • Viruses<br>
+      • Fungi<br>
+      • Protozoa</p>
+
+      <p><b>Memory tip:</b> Micro = small, Biology = study of life.</p>
+    `
+  },
+
+  foundation: {
+    title: "🩺 Foundation Nursing",
+    text: `
+      <p><b>Foundation Nursing</b></p>
+
+      <p>Nursing involves caring for individuals, families and communities to promote health, prevent illness and support recovery.</p>
+
+      <p><b>Important areas:</b></p>
+      <p>• Communication<br>
+      • Patient care<br>
+      • Vital signs<br>
+      • Hygiene<br>
+      • Infection prevention<br>
+      • Nursing ethics<br>
+      • Basic procedures</p>
+    `
+  },
+
+  pch: {
+    title: "🏥 Personal & Community Health",
+    text: `
+      <p><b>Personal and Community Health</b></p>
+
+      <p>This area focuses on maintaining and improving the health of individuals and communities.</p>
+
+      <p><b>Important areas:</b></p>
+      <p>• Health promotion<br>
+      • Disease prevention<br>
+      • Environmental health<br>
+      • Community participation<br>
+      • Personal hygiene</p>
+    `
+  },
+
+  questions: {
+    title: "📝 Revision Questions",
+    text: `
+      <p><b>Question 1:</b> What is anatomy?</p>
+      <p><b>Question 2:</b> What is physiology?</p>
+      <p><b>Question 3:</b> Name four types of microorganisms.</p>
+      <p><b>Question 4:</b> What is nursing?</p>
+      <p><b>Question 5:</b> Give two ways of preventing infection.</p>
+      <p><b>Question 6:</b> What is health promotion?</p>
+
+      <p><b>Study tip:</b> Try answering each question before looking at your notes.</p>
+    `
+  }
+
+};
+
+
+function openNote(subject) {
+
+  document.getElementById("home").style.display = "none";
+
+  const box = document.getElementById("notes");
+
+  box.style.display = "block";
+
+  box.innerHTML = `
+    <button class="back" onclick="showHome()">← Back</button>
+    <h2>${notes[subject].title}</h2>
+    <br>
+    ${notes[subject].text}
+  `;
+
+  window.scrollTo(0,0);
+}
+
+
+function showHome() {
+
+  document.getElementById("home").style.display = "block";
+  document.getElementById("notes").style.display = "none";
+
+}
+
+
+function openAI() {
+
+  document.getElementById("home").style.display = "none";
+
+  const box = document.getElementById("notes");
+
+  box.style.display = "block";
+
+  box.innerHTML = `
+    <button class="back" onclick="showHome()">← Back</button>
+
+    <h2>🤖 AI Study Assistant</h2>
+
+    <br>
+
+    <p>Ask me something about your nursing studies.</p>
+
+    <br>
+
+    <input
+      id="aiQuestion"
+      placeholder="Example: Explain the heart simply"
+      style="width:100%;padding:14px;border:1px solid #ddd;border-radius:12px;">
+
+    <br><br>
+
+    <button class="back" onclick="askAI()">Ask AI</button>
+
+    <div id="aiAnswer" style="margin-top:20px;"></div>
+  `;
+
+}
+
+
+function askAI() {
+
+  const question = document.getElementById("aiQuestion").value;
+
+  if (!question.trim()) {
+    alert("Please type a question first.");
+    return;
+  }
+
+  document.getElementById("aiAnswer").innerHTML = `
+    <h3>🤖 Study Assistant</h3>
+    <br>
+    <p>Your question was:</p>
+    <p><b>${question}</b></p>
+    <br>
+    <p>
+      The AI connection will be added in the next version.
+      For now, your app is ready for your nursing notes and
+      revision questions.
+    </p>
+  `;
+
+}
+
+
+function searchNotes() {
+
+  const search = document.getElementById("search").value.toLowerCase();
+
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+
+    const text = card.innerText.toLowerCase();
+
+    if (text.includes(search)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+
+  });
+
+}
+
+</script>
+
+</body>
+</html>
